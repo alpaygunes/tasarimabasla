@@ -12,6 +12,8 @@
     });
 </script>
 
+
+
 <div class="tab-pane" id="tab-tasarim-secenekleri">
     <div class="kendin-tasarlar table-responsive">
         <table class="table table-striped table-bordered table-hover" id="tasarim-tablosu">
