@@ -53,6 +53,11 @@
                                             </div>
 
                                             <div class="btn btn-primary btn-lg dugme"
+                                                 id="cs-txt-kutu-ekle" title="Çoksatırlı Yazı Ekle">
+                                                <i class="fa  fa-ioxhost"></i>
+                                            </div>
+
+                                            <div class="btn btn-primary btn-lg dugme"
                                                  id="filigran-ekle" title="Filigran">
                                                 <i class="fa fa-bookmark"></i>
                                             </div>
