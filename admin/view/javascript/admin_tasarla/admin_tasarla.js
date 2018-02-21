@@ -468,9 +468,7 @@ $( document ).ready(function() {
                     if(icerik.tur =="cs_txt_kutu"){
                         $('#karakter-limiti').val(icerik.karakter_limiti);
                         $('.txt-araci').show();
-
                     }
-                    //alert(icerik.karakter_limiti);
 
                     $('#font-listesi').val(icerik.font_family);
                     $('#font-boyutu').val(icerik.font_size);
@@ -726,7 +724,7 @@ function iceriklerArrGuncelleResizeablekIcin(nesne){
                 }
 
 
-                if(icerik.tur=="txt_kutu"){
+                if(icerik.tur=="cs_txt_kutu"){
                     icerik.height = $height;
                 }
 

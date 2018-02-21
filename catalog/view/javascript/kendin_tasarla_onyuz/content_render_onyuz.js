@@ -3,6 +3,19 @@
 var hedef_icerik;
 var kiminicin='';// editor için  kullnılıyor
 $(document).ready(function() {
+
+    $(document).on('click','#cnv_container',function () {
+        var TopFarki =  $('#kose_tutucu').parent().parent().offset().top - $('#kose_tutucu').offset().top;
+        var LeftFarki =  $('#kose_tutucu').parent().parent().offset().left - $('#kose_tutucu').offset().left;
+        console.log("$(this).offset().top   " + $('#kose_tutucu').offset().top);
+        console.log("$(this).parent().left   " + $('#kose_tutucu').offset().left);
+        console.log("TopFarki    " + TopFarki);
+        console.log("LeftFarki    " + LeftFarki);
+    })
+
+
+
+
     $('#etiketler').on('change','.etiket-alani',function () {
         $id = $(this).attr('hedef');
         for (var k in iceriklerArr) {
@@ -12,7 +25,12 @@ $(document).ready(function() {
                     icerik.text             = emojileriTemizle($(this).val());
                     icerik.text_uzun_hali   = emojileriTemizle($(this).val());
                     if(icerik.bicim == 'duz'){
-                        fontBoyuntunuHesapla(icerik);
+                        if(icerik.tur=="cs_txt_kutu"){
+
+                        }else{
+                            fontBoyuntunuHesapla(icerik);
+                        }
+
                     }else{
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
                     }
@@ -428,7 +446,7 @@ function etiketBelirtecleriniOlustur(iceriklerArr,tuval){
                     icerik.id+'" ' + txtGizleGoster(icerik.istemiyorum_chck) +
                     'class="'+classAyarla(icerik)+'">'
                     +
-                    '</div>')
+                    '<div id="kose_tutucu"></div></div>')
             }
         }
     }
@@ -689,6 +707,138 @@ function canvasRender(iceriklerArr,genislik,yukseklik){
                         ctx.drawImage(img,icerik.left,icerik.top);
                     }
                 }
+
+
+
+
+
+
+
+
+
+                if(icerik.tur=="cs_txt_kutu"){
+                    var lines = icerik.text.split('\n');
+                    for(var i = 0;i < lines.length;i++){
+                        ctx.setTransform(1, 0, 0, 1, 0, 0);
+                        icerik.text = lines[i];
+                        var $x              = 0;
+                        var $y              = 0;
+                        var font_style = icerik.font_style=='italic'?'italic':'';
+                        var font_weight = icerik.font_weight=='bold'?'bold':'';
+                        //var text_decoration = icerik.text_decoration=='underline'?'underline':'';
+                        ctx.font            = font_style+' '+font_weight+' '+icerik.font_size+"px " + icerik.font_family;
+                        hizalama_payi       = 0;
+
+                        if(icerik.text_align=='center'){
+                            /*ctx.textAlign   = icerik.text_align;
+                            $x              = 0;
+                            $y              = -icerik.font_size*.22;
+                            hizalama_payi   =icerik.width *.5;
+                            ctx.translate(icerik.left+hizalama_payi,icerik.top);*/
+
+                            ctx.textAlign   = icerik.text_align;
+                            $x              = (icerik.height*.5  * Math.sin(icerik.rotation));
+                            aaa             =  Math.sin(icerik.rotation);
+                            if(icerik.rotation>.7){
+                                acidegeri =  Math.atan(aaa);
+                            }
+
+                            if(icerik.rotation<=-1.5){
+                                acidegeri=  - Math.cos(aaa);
+                            }else if(icerik.rotation<=-0.7){
+                                acidegeri=  - Math.sin(aaa);
+                            }else if(icerik.rotation<0){
+                                acidegeri=  - Math.sin(aaa);
+                            }
+
+
+                            $y              = icerik.font_size*(i+1) - (icerik.font_size  * acidegeri); ;
+                            hizalama_payi   = icerik.width *.5;
+                            ctx.translate(icerik.left+hizalama_payi,icerik.top);
+
+
+
+
+
+                        }else if(icerik.text_align=='left'){
+                            ctx.textAlign   = icerik.text_align;
+                            $x              = -icerik.width*0.5 + (icerik.height*.5  * Math.sin(icerik.rotation));
+                            aaa             =  Math.sin(icerik.rotation);
+                            if(icerik.rotation>.7){
+                                acidegeri =  Math.atan(aaa);
+                            }
+
+                            if(icerik.rotation<=-1.5){
+                                acidegeri=  - Math.cos(aaa);
+                            }else if(icerik.rotation<=-0.7){
+                                acidegeri=  - Math.sin(aaa);
+                            }else if(icerik.rotation<0){
+                                acidegeri=  - Math.sin(aaa);
+                            }
+
+
+                            $y              = icerik.font_size*(i+1) ;
+                            hizalama_payi   = icerik.width *.5;
+                            ctx.translate(icerik.left+hizalama_payi,icerik.top);
+                        }else if(icerik.text_align=='right'){
+                            /*ctx.textAlign   = icerik.text_align;
+                            $x              = icerik.width*0.5;
+                            $y              = -icerik.font_size*.22;
+                            hizalama_payi   = icerik.width *.5;
+                            ctx.translate(icerik.left+hizalama_payi,icerik.top);*/
+
+                            ctx.textAlign   = icerik.text_align;
+                            $x              =   icerik.width*0.5 + (icerik.height*.5  * Math.sin(icerik.rotation));
+                            aaa             =  Math.sin(icerik.rotation);
+                            if(icerik.rotation>.7){
+                                acidegeri =  Math.atan(aaa);
+                            }
+
+                            if(icerik.rotation<=-1.5){
+                                acidegeri=  - Math.cos(aaa);
+                            }else if(icerik.rotation<=-0.7){
+                                acidegeri=  - Math.sin(aaa);
+                            }else if(icerik.rotation<0){
+                                acidegeri=  - Math.sin(aaa);
+                            }
+
+
+                            $y              = icerik.font_size*(i+1) - (icerik.font_size  * acidegeri); ;
+                            hizalama_payi   = icerik.width *.5;
+                            ctx.translate(icerik.left+hizalama_payi,icerik.top);
+
+                        }
+                        ctx.rotate(icerik.rotation);
+                        ctx.lineWidth =0.01;
+                        ctx.strokeStyle ='';
+                        ctx.lineJoin="round";
+                        if(icerik.stroke_size>0){
+                            ctx.lineWidth   = icerik.stroke_size;
+                            ctx.strokeStyle = icerik.stroke_color;
+                        }
+                        ctx.strokeText(icerik.text,$x,($y+parseInt(icerik.font_size)));
+                        if(typeof golgeParam!=="undefined"){
+                            ctx.shadowOffsetY   =
+                                golgeParam[0]*Math.sin(icerik.rotation) + golgeParam[1]*Math.cos(icerik.rotation);
+                            ctx.shadowOffsetX   =
+                                golgeParam[0]*Math.cos(icerik.rotation) - golgeParam[1]*Math.sin(icerik.rotation);
+                            ctx.shadowBlur      = golgeParam[2];
+                            ctx.shadowColor     = golgeParam[3];
+                        }
+                        ctx.fillStyle           = icerik.color;
+                        ctx.fillText(icerik.text,$x,$y);
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
             }
             ctx.restore();
         }
