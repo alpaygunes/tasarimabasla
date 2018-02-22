@@ -4,10 +4,10 @@ var hedef_icerik;
 var kiminicin='';// editor için  kullnılıyor
 
 
-
-
 var TopFarki=0;
 var LeftFarki;
+var duzenleme_penceresi_oran_w = 0;
+var duzenleme_penceresi_oran_h = 0;
 
 $(document).ready(function() {
 
@@ -386,13 +386,15 @@ function belirteclereTiklanincaGirisYapilsin(){
     })
 }
 
+
 function etiketBelirtecleriniOlustur(iceriklerArr,tuval){
     var CursorLayer_w_attr   = $(tuval).find('#CursorLayer').attr('width');
     var canvas_genisligi     = $(tuval).find('#CursorLayer').width();
-    var oran_w               =  canvas_genisligi/CursorLayer_w_attr
+    var oran_w               = canvas_genisligi/CursorLayer_w_attr;
     var CursorLayer_h_attr   = $(tuval).find('#CursorLayer').attr('height');
     var canvas_yuksekligi    = $(tuval).find('#CursorLayer').height();
-    var oran_h               = canvas_yuksekligi/CursorLayer_h_attr
+    var oran_h               = canvas_yuksekligi/CursorLayer_h_attr;
+
 
     for (var k in iceriklerArr){
         if (iceriklerArr.hasOwnProperty(k)) {
@@ -720,7 +722,7 @@ function canvasRender(iceriklerArr,genislik,yukseklik){
                     var canvas_yuksekligi    = $('#cnv_container').find('#CursorLayer').height();
                     var oran_h               = canvas_yuksekligi/CursorLayer_h_attr
 
-                    if(TopFarki==0){
+                    if(TopFarki==0 || TopFarki=='sifirla'){
                         $('.tuval-ogesi').show();
                         TopFarki  =  Math.abs($('#kose_tutucu').parent().parent().offset().top - $('#kose_tutucu').offset().top);
                         LeftFarki =  Math.abs($('#kose_tutucu').parent().parent().offset().left - $('#kose_tutucu').offset().left);
@@ -728,10 +730,18 @@ function canvasRender(iceriklerArr,genislik,yukseklik){
                         console.log("$(this).parent().left   " + $('#kose_tutucu').offset().left);
                         console.log("TopFarki    " + TopFarki);
                         console.log("LeftFarki    " + LeftFarki);
-                        $('.tuval-ogesi').hide();
+                        if(TopFarki==0){
+                            $('.tuval-ogesi').hide();
+                        }
+                    }
+
+                    if(duzenleme_penceresi_oran_w!=0){
+                        oran_h = duzenleme_penceresi_oran_h;
+                        oran_w = duzenleme_penceresi_oran_w;
                     }
 
 
+                    icerik.text = (icerik.text==undefined?'':icerik.text)
                     var lines = icerik.text.split('\n');
                     for(var i = 0;i < lines.length;i++){
                         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -933,9 +943,12 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         text = icerik.text_uzun_hali
         if(text!=undefined){
             newTemp = text.replace(/"/g, "&quot;");
-        }else{
+        }
+
+        if(icerik.text!=undefined){
             newTemp = icerik.text.replace(/"/g, "&quot;");
         }
+
         icerik.text=text;
         return newTemp;
     }
@@ -1048,7 +1061,7 @@ $(document).ready(function() {
                 icerik              = editorIceriklerArr[k];
                 if(icerik.id==$id){
                     icerik.font_family     = $( "#editor-font-listesi option:selected" ).val();
-                    if(icerik.bicim == 'duz'){
+                    if( icerik.tur="txt_kutu" &&icerik.bicim == 'duz'){
                         fontBoyuntunuHesapla(icerik);
                     }else{
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
@@ -1127,15 +1140,16 @@ $(document).ready(function() {
         konum_degisti = 0;
     })
 
+
     function yeniKonumuKaydet(){
         //orjinal içerikteki oranalr varklı tersine çevirelim
         tuval = '#editor-canvas';
         var CursorLayer_w_attr   = $(tuval).find('#CursorLayer').attr('width');
         var canvas_genisligi     = $(tuval).find('#CursorLayer').width();
-        var oran_w               =  canvas_genisligi/CursorLayer_w_attr
+        duzenleme_penceresi_oran_w               = canvas_genisligi / CursorLayer_w_attr
         var CursorLayer_h_attr   = $(tuval).find('#CursorLayer').attr('height');
         var canvas_yuksekligi    = $(tuval).find('#CursorLayer').height();
-        var oran_h               = canvas_yuksekligi/CursorLayer_h_attr
+        duzenleme_penceresi_oran_h               = canvas_yuksekligi/CursorLayer_h_attr
         //-----------------
         dik_top =$('#editor-canvas #'+editor_hedef_txt_id).css('top');
         dik_top = parseInt(dik_top.replace('px',''));
@@ -1145,17 +1159,17 @@ $(document).ready(function() {
             if (editorIceriklerArr.hasOwnProperty(k)) {
                 icerik              = editorIceriklerArr[k];
                 if(icerik.id==editor_hedef_txt_id){
-                    if(icerik.bicim == 'duz'){
+                    if( icerik.tur == 'txt_kutu' && icerik.bicim == 'duz'){
                         fontBoyuntunuHesapla(icerik);
                         if(icerik.fark!=undefined){
                             dik_top         = dik_top+icerik.fark/2
                         }
-                        icerik.top      = dik_top/oran_h;
-                        icerik.left     = yat_left/oran_w;
+                        icerik.top      = dik_top/duzenleme_penceresi_oran_h;
+                        icerik.left     = yat_left/duzenleme_penceresi_oran_h;
                     }else{
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
-                        icerik.top     = dik_top/oran_h;
-                        icerik.left    = yat_left/oran_w;
+                        icerik.top     = dik_top/duzenleme_penceresi_oran_h;
+                        icerik.left    = yat_left/duzenleme_penceresi_oran_h;
                     }
                 }
             }
@@ -1164,13 +1178,11 @@ $(document).ready(function() {
         editorTuvalineCiz(editorIceriklerArr);
         $('#editor-canvas #'+editor_hedef_txt_id).css('border','#00FF00 solid 1px');
 
-           /* $('#editor-canvas .tuval-ogesi').show();
-            TopFarki  =  Math.abs($('#editor-canvas .tuval-ogesi #kose_tutucu').parent().parent().offset().top - $('#editor-canvas .tuval-ogesi #kose_tutucu').offset().top);
-            LeftFarki =  Math.abs($('#editor-canvas .tuval-ogesi #kose_tutucu').parent().parent().offset().left - $('#editor-canvas .tuval-ogesi #kose_tutucu').offset().left);
-            console.log("ecTopFarki    " + TopFarki);
-            console.log("ecLeftFarki    " + LeftFarki);
-            $('#editor-canvas .tuval-ogesi').show();
-            */
+        TopFarki  =  Math.abs($('#editor-canvas .tuval-ogesi #kose_tutucu').parent().parent().offset().top - $('#editor-canvas .tuval-ogesi #kose_tutucu').offset().top);
+        LeftFarki =  Math.abs($('#editor-canvas .tuval-ogesi #kose_tutucu').parent().parent().offset().left - $('#editor-canvas .tuval-ogesi #kose_tutucu').offset().left);
+
+        console.log("ecTopFarki    " + TopFarki);
+        console.log("ecLeftFarki    " + LeftFarki);
     }
 
 
@@ -1186,10 +1198,14 @@ $(document).ready(function() {
 
 
     $('.editor-sifirla').click(function () {
+        duzenleme_penceresi_oran_w = 0;
+        TopFarki='sifirla'
         jQuery.each( iceriklerArr, function( i, val ) {
             editorIceriklerArr[i] = jQuery.extend(true,{}, val);
         });
         editorTuvalineCiz(editorIceriklerArr);
+
+        $('#editor-canvas #'+editor_hedef_txt_id).css('border','#00FF00 solid 1px');
     });
 
     $('.editor-kaydet').click(function () {
