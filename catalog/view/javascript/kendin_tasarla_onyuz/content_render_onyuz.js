@@ -20,14 +20,10 @@ $(document).ready(function() {
                 if(icerik.id==$id){
                     icerik.text             = emojileriTemizle($(this).val());
                     icerik.text_uzun_hali   = emojileriTemizle($(this).val());
-                    if(icerik.bicim == 'duz'){
-                        if(icerik.tur=="cs_txt_kutu"){
+                    if( icerik.tur == 'txt_kutu' && icerik.bicim == 'duz'){
+                        fontBoyuntunuHesapla(icerik);
 
-                        }else{
-                            fontBoyuntunuHesapla(icerik);
-                        }
-
-                    }else{
+                    }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
                     }
                     ciz();
@@ -124,6 +120,8 @@ $(document).ready(function() {
 
 
 });
+
+
 
 function fontBoyuntunuHesapla(icerik){
     if(icerik.orjinal_font_size!=undefined){
@@ -349,11 +347,9 @@ function belirteclereTiklanincaGirisYapilsin(){
                     }
                 }
                 //-------------------
-
-                //var etiket = prompt();
                 var etiket=''
                 var obj= $(this);
-                $( "#dialog" ).dialog({
+                var dialog_lutusu =$( "#dialog" ).dialog({
                     position: {
                         my: "top",
                         at: "top",
@@ -361,23 +357,31 @@ function belirteclereTiklanincaGirisYapilsin(){
                     }
                 });
                 $('#dialog-girdi').val(' ');
-                //if(typeof hedef_icerik.karakter_limiti!='undefined'){
-                    //$('#dialog-metin').html("İstediğiniz metni yazın. (" + hedef_icerik.karakter_limiti+ " karakter)  ")
-                    $( "#dialog" ).dialog();
+                $( "#dialog" ).dialog();
 
-
-                    //$('#dialog-girdi').attr("maxlength",hedef_icerik.karakter_limiti);
-                    $('#dialog-girdi').val(hedef_icerik.text);
+                if(hedef_icerik.tur=='cs_txt_kutu'){
+                    $('#dialog-girdi').hide();
+                    $('#dialog-girdi-cs').show();
+                    $('#dialog-girdi-cs').val(hedef_icerik.text);
                     $('#dialog-tamam').click(function () {
-                        etiket = $('#dialog-girdi').val();
-                        //if(etiket.length>hedef_icerik.karakter_limiti){
-                          //  etiket = etiket.substring(0,hedef_icerik.karakter_limiti);
-                        //}
+                        etiket = $('#dialog-girdi-cs').val();
                         obj.val(etiket);
                         obj.trigger('change');
                         $( "#dialog" ).dialog("close");
                     })
-                //}
+                }else if(hedef_icerik.tur=='txt_kutu'){
+                    $('#dialog-girdi').show();
+                    $('#dialog-girdi-cs').hide();
+                    $('#dialog-girdi').val(hedef_icerik.text);
+                    $('#dialog-tamam').click(function () {
+                        etiket = $('#dialog-girdi').val();
+                        obj.val(etiket);
+                        obj.trigger('change');
+                        $( "#dialog" ).dialog("close");
+                    })
+                }
+
+
 
 
             }
@@ -912,7 +916,9 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
                     "<textarea type=\"text\" style=\"border: none;" +
                     "box-shadow: none;" +
                     "text-align: "+icerik.text_align+";" +
-                    "width: " +icerik.width+"px;"+
+                    "font-size: "+(icerik.font_size*.80)+"px;" +
+                    "font-family: "+icerik.font_family+";" +
+                    "width: "+icerik.width+"px;" +
                     "\"" +
                     "hedef=\""+icerik.id+"\" id=\"etiket"+icerik.id+"\""+
                     ackapaAyarla(icerik.istemiyorum_chck) +
@@ -939,6 +945,14 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
     }
 
 
+
+
+
+
+
+
+
+
     function csTirnakVbSorunlar(icerik) {
         text = icerik.text_uzun_hali
         if(text!=undefined){
@@ -949,9 +963,77 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
             newTemp = icerik.text.replace(/"/g, "&quot;");
         }
 
-        icerik.text=text;
+        // tırnak temizlendikten sonra
+        // yazının genişliğini ölçmek için div ekleyelim
+        $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:200px;left:10px;border: 5px solid #ccc\"></div>")
+        $("#Wolcum").css('font-family',icerik.font_family)
+        $("#Wolcum").css('font-size',icerik.font_size+"px")
+        $("#Wolcum").empty();
+
+        var satirlar = newTemp.split('\n');
+        var yeni_satirlar = ['']
+        yeni_Satir_no =0;
+        $.each(satirlar, function( index, value ) {
+            if(value.length==0 && index<satirlar.length-1){
+                yeni_satirlar[yeni_Satir_no]='';
+                yeni_Satir_no++;
+            }
+            for(var i = 0;i<value.length;i++){
+                $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
+                yeni_satirlar[yeni_Satir_no] = $("#Wolcum").html();
+                if($("#Wolcum").innerWidth()>icerik.width){
+                    $("#Wolcum").empty();
+                    if(i==value.length-1){
+                        continue;
+                    }
+                    yeni_Satir_no++;
+                    if( yeni_satirlar[yeni_Satir_no]!=undefined){
+                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i) + yeni_satirlar[yeni_Satir_no]
+                    }else {
+                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i)
+                    }
+                }
+            }
+            $("#Wolcum").empty()
+            if(value.length>0){
+                yeni_Satir_no++;
+            }
+        });
+
+        console.log(yeni_satirlar)
+        newTemp='';
+        $.each(yeni_satirlar, function( index, value ) {
+            newTemp += value+'\r\n';
+        })
+
+
+
+        icerik.text=newTemp;
         return newTemp;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1061,9 +1143,9 @@ $(document).ready(function() {
                 icerik              = editorIceriklerArr[k];
                 if(icerik.id==$id){
                     icerik.font_family     = $( "#editor-font-listesi option:selected" ).val();
-                    if( icerik.tur="txt_kutu" &&icerik.bicim == 'duz'){
+                    if( icerik.tur=="txt_kutu" &&icerik.bicim == 'duz'){
                         fontBoyuntunuHesapla(icerik);
-                    }else{
+                    }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
                     }
                     //hedefKutUdakiYaziyaGoreFontKutusunuYenile(icerik.text)
@@ -1084,9 +1166,9 @@ $(document).ready(function() {
                 icerik              = editorIceriklerArr[k];
                 if(icerik.id==$id){
                     icerik.color     = renk_kodu;
-                    if(icerik.bicim == 'duz'){
+                    if( icerik.tur == 'txt_kutu' && icerik.bicim == 'duz'){
                         fontBoyuntunuHesapla(icerik);
-                    }else{
+                    }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
                     }
                     editorTuvalineCiz(editorIceriklerArr);
@@ -1166,11 +1248,11 @@ $(document).ready(function() {
                         }
                         icerik.top      = dik_top/duzenleme_penceresi_oran_h;
                         icerik.left     = yat_left/duzenleme_penceresi_oran_h;
-                    }else{
+                    }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
-                        icerik.top     = dik_top/duzenleme_penceresi_oran_h;
-                        icerik.left    = yat_left/duzenleme_penceresi_oran_h;
                     }
+                    icerik.top     = dik_top/duzenleme_penceresi_oran_h;
+                    icerik.left    = yat_left/duzenleme_penceresi_oran_h;
                 }
             }
         }
