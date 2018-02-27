@@ -296,6 +296,32 @@
                                         </td>
                                     </tr>
 
+
+
+
+                                    <tr>
+                                        <td>
+                                            <div class="input-group input-group-sm txt-araci">
+                                                <span class="input-group-addon" id="sizing-addon3">Font Height</span>
+                                                <select class="form-control input-sm" id="font-height">
+                                                    <option value="Times New Roman"
+                                                            style="font-family: Times New Roman;">Font Height
+                                                    </option>
+                                                    <?php
+                                                        for($i=1;$i<=500;$i++){
+                                                            echo  "<option value=\"$i".""."\">".$i."px </option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+
+
+
                                     <tr>
                                         <td>
                                             <div class="input-group input-group-sm txt-araci">

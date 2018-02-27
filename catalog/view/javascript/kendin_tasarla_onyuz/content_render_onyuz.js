@@ -762,16 +762,19 @@ function canvasRender(iceriklerArr,genislik,yukseklik){
                             ctx.textAlign   = icerik.text_align;
                             $x              = icerik.width*.5;
                             $y              = icerik.font_size*(i+1);
+                            $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
                             ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
                         }else if(icerik.text_align=='left'){
                             ctx.textAlign   = icerik.text_align;
                             $x              = 0;
                             $y              = icerik.font_size*(i+1);
+                            $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
                             ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
                         }else if(icerik.text_align=='right'){
                             ctx.textAlign   = icerik.text_align;
                             $x              = icerik.width;
                             $y              = icerik.font_size*(i+1);
+                            $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
                             ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
                         }
 
@@ -1003,6 +1006,8 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         console.log(yeni_satirlar)
         newTemp='';
         $.each(yeni_satirlar, function( index, value ) {
+            value = value.replace(/\n/g,'');
+            value = value.replace(/\r/g,'');
             newTemp += value+'\r\n';
         })
 

@@ -197,6 +197,7 @@ $( document ).ready(function() {
             top:"0",
             font_family:"Arial",
             font_size:20,
+            font_height:20,
             color:"#000000",
             rotation:"0",
             text_align:"center",
@@ -305,6 +306,27 @@ $( document ).ready(function() {
         draw();
     })
 //------------------------------------------ END
+
+
+
+// -----------------------------   -----------------------   FONT BOYUTU SEÇİLİNCE
+    $("#font-height").change(function () {
+        $id             = $(seciliOge).attr('id');
+        for (var nesne in iceriklerArr){
+            if (iceriklerArr.hasOwnProperty(nesne)) {
+                icerik = iceriklerArr[nesne];
+                if(icerik.id==$id){
+                    icerik.font_height = $(this).val();
+                }
+            }
+        }
+        draw();
+    })
+//------------------------------------------ END
+
+
+
+
 
 // -----------------------------------------------------   STROKE BOYUTU SEÇİLİNCE
     $("#stroke-boyutu").change(function () {
@@ -472,6 +494,7 @@ $( document ).ready(function() {
 
                     $('#font-listesi').val(icerik.font_family);
                     $('#font-boyutu').val(icerik.font_size);
+                    $('#font-height').val(icerik.font_height);
                     $('#font_rengi').val(icerik.color);
                     $('#font_rengi').css('background-color',icerik.color);
                     $('#stroke-boyutu').val(icerik.stroke_size);
@@ -869,7 +892,7 @@ function draw(dbDenGelen){
                     'class="txt_kutu tuval-ogesi ' + classAyarla(icerik)+'">'
                     + icerik.text +
                     '<div id="alta-gonder-btn" sira="'+k+'" title="Alta gönder">'+k+'</div>'+
-                    '</div>')
+                    '<div id="kose_tutucu"></div></div>')
 
             }
             if(icerik.tur=='filigran'){

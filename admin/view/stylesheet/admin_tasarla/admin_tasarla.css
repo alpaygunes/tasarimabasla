@@ -1,0 +1,127 @@
+@import "fontlar/hepsi.css";
+
+#kose_tutucu{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background-color: red;
+}
+
+.kendin-tasarlar #tasarim-tablosu{
+    height: 600px;
+}
+.kendin-tasarlar #tasarim-tablosu tr td{
+    vertical-align: top;
+}
+
+.kendin-tasarlar #sol-bolum{
+    width: 70%;
+    height: 100%;
+    max-width: 500px;
+    overflow: auto;
+    background-image: url('saydam.png');
+}
+
+.kendin-tasarlar #sag-bolum #arac-tablosu tr .kucuk-iconlar-satiri {
+    height: 50px;
+}
+
+.kendin-tasarlar .dugme{
+    border-radius: 0px !important;
+    height: 40px!important;
+    /*width: 40px!important;*/
+    padding: 10px!important;
+}
+
+.kendin-tasarlar #arac-tablosu{
+    width: 100%!important;
+}
+
+.kendin-tasarlar #arac-tablosu tr td{
+    padding: 0px!important;
+
+}
+
+.kendin-tasarlar #arac-tablosu .alt-arac-tablosu{
+    width: 120px!important;
+    margin-right: auto;!important;
+    margin-left: auto!important;
+}
+
+#tuval{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+#tuval .resim_yer_tutucu{
+    position: absolute;
+    top: 40%;
+    left:25%;
+    border: 1px solid #000;
+    width: 250px;
+    height: 250px;
+    background-color: rgba(255, 255, 255, 0.52);
+}
+
+
+#tuval .txt_kutu{
+    position: absolute;
+    top: 40%;
+    left:25%;
+    border: 1px solid #000;
+    width: 250px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.52);
+    padding: 0!important;
+}
+
+#tuval .txt_kutu-tek-satir{
+    white-space: nowrap;
+    overflow:visible;
+}
+#tuval .txt_kutu-dairesel{
+
+}
+
+#tuval .txt_kutu .ui-rotatable-handle{
+    position: absolute;
+    left:-15px;
+    top:0px;
+}
+
+#tuval #alta-gonder-btn{
+    position: absolute;
+    right: -20px;
+    top: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 20px;
+    background-color: #3985b3;
+    font-size: 12px;
+}
+
+#tuval #alta-gonder-btn:hover{
+    background-color: #ff3738;
+    cursor: pointer;
+}
+
+.kategori-logo-icon{
+    width: 64px;
+    margin: 10px;
+}
+.kategori-logo-icon:hover{
+    width: 68px;
+    margin: 8px;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,242 @@
+@import "kirpici.css";
+@import "fontlar/hepsi.css";
+
+#kose_tutucu{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background-color: red;
+}
+
+#tasarim-alani{
+    width: 100%;
+    margin-top: 15px;
+}
+
+
+
+#cnv_container{
+    position: relative;
+    width: 100%;
+    background-color: transparent;
+    display: block;
+
+}
+#cnv_container .resim_yer_tutucu{
+    position: absolute;
+    top: 40%;
+    left:25%;
+    border: 1px solid rgba(51, 190, 0, 0.83);
+    width: 250px;
+    height: 250px;
+}
+#cnv_container .resim_yer_tutucu:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+
+
+
+#cnv_container .txt_kutu{
+    position: absolute;
+    top: 40%;
+    left:25%;
+    border: 1px solid rgba(51, 190, 0, 0.83);
+    width: 250px;
+    height: 30px;
+}
+
+#cnv_container .txt_kutu:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+#cnv_container .txt_kutu-tek-satir{
+    white-space: nowrap;
+    overflow:visible;
+}
+
+#cnv_container .txt_kutu-dairesel{
+    /*border-radius: 500px;
+     border:35px solid rgba(163, 163, 163, 0.32);*/
+}
+
+#cnv_container .txt_kutu .ui-rotatable-handle{
+    position: absolute;
+    left:-15px;
+    top:0px;
+}
+
+
+.alanseti{
+    margin-left: 10px!important;
+    border: 1px solid #999999!important;
+    padding: 0;
+    margin: 0;
+}
+
+.alanseti label{
+    width: 100%!important;
+    float: none!important;
+    display: inline!important;
+}
+
+.alanseti legend{
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+#tasarim-onay-label{
+    font-size: 14px!important;
+    font-weight: bold!important;
+}
+
+#etiketler.table{
+    margin-left: 10px;
+    border-spacing: 1px!important;
+    width: 95%;
+}
+
+.product-info .right {
+    padding-left: 0px!important;
+}
+
+#etiketler input[type=text]{
+    /*width: 295px!important;*/
+    border: 1px solid #b3b3b3;
+    /*border-radius: 3px;*/
+    /*box-shadow: 3px 3px 3px #e8e8e8 inset;*/
+    height: 32px!important;
+    font-size: 15px;
+}
+
+
+#etiketler .font-artir-azalt .btn{
+    padding: 0px!important;
+    border-radius: 0px!important;
+    line-height: 10px!important;
+    margin-left: 2px;
+}
+
+
+#etiketler .resim-btn{
+    border-radius: 0px!important;
+    height: 35px!important;
+}
+
+
+#etiketler .onaylama-yeri{
+    width: 32px;
+    height: 32px;
+}
+
+#etiketler .onaylama-yeri i{
+    font-size: 34px;
+    color: #2199C6;
+}
+
+#etiketler .onaylama-yeri i:hover{
+    font-size: 34px;
+    color: #c6495d;
+}
+
+
+.ui-dialog .ui-dialog-titlebar-close{
+    width: 25px!important;
+    height: 25px!important;
+    border: none!important;
+    background-image: url('tasarim-dialog-close.png');
+}
+
+#myModal #instagramdan-yukle{
+    background-image: url("instagram-login-button.png")!important;
+    background-repeat: no-repeat!important;
+    padding-left: 40px;
+}
+
+#myModal #instagramdan-yukle:hover{
+    background-position: 0 0!important;
+}
+
+#instagram-resimleri img{
+    padding: 3px;
+    border: 1px solid #ccc;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+#instagram-resimleri ul li{
+    cursor: pointer;
+}
+
+
+
+.modal-body .btn{
+    margin: 1px!important;
+}
+
+
+#etiketler tr td .yazi-eklemek-istemiyorum{
+    margin-left: 0px;
+}
+
+
+
+#iyizico-formunu-goster{
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 37px;
+    border: 0;
+    text-decoration: none;
+    background: #45b1e8;
+    background-image: -webkit-linear-gradient(#45b1e8,#3097de);
+    background-image: -moz-linear-gradient(#45b1e8,#3097de);
+    background-image: -ms-linear-gradient(#45b1e8,#3097de);
+    background-image: -o-linear-gradient(#45b1e8,#3097de);
+    background-image: -webkit-linear-gradient(#45b1e8,#3097de);
+    background-image: -moz-linear-gradient(#45b1e8,#3097de);
+    background-image: -ms-linear-gradient(#45b1e8,#3097de);
+    background-image: -o-linear-gradient(#45b1e8,#3097de);
+    background-image: linear-gradient(#45b1e8,#3097de);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-font-smoothing: antialiased;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(46,86,153,.3);
+    -webkit-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+    -moz-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+    -ms-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+    -o-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+    box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+    -webkit-transition: box-shadow .15s linear;
+    -moz-transition: box-shadow .15s linear;
+    -ms-transition: box-shadow .15s linear;
+    -o-transition: box-shadow .15s linear;
+    transition: box-shadow .15s linear;
+    padding-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
