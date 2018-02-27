@@ -822,7 +822,7 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                         var canvas_yuksekligi    = $('#cnv_container').find('#CursorLayer').height();
                         var oran_h               = canvas_yuksekligi/CursorLayer_h_attr
 
-                        if(TopFarki==0 || TopFarki=='sifirla'){
+                        //if(TopFarki==0 || TopFarki=='sifirla'){
                             $('.tuval-ogesi').show();
                             TopFarki  =  Math.abs($('#kose_tutucu').parent().parent().offset().top - $('#kose_tutucu').offset().top);
                             LeftFarki =  Math.abs($('#kose_tutucu').parent().parent().offset().left - $('#kose_tutucu').offset().left);
@@ -833,7 +833,7 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                             if(TopFarki==0){
                                 $('.tuval-ogesi').hide();
                             }
-                        }
+                        //}
 
                         if(duzenleme_penceresi_oran_w!=0){
                             oran_h = duzenleme_penceresi_oran_h;

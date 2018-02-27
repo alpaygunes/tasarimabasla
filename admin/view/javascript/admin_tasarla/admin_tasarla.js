@@ -106,6 +106,7 @@ $( document ).ready(function() {
         $(this).css('border',"1px solid #ccc")
         secilen_kategori_iconun_urlsi =$(this).attr('src');
     })
+
     $('#tuval').on('mouseup','.kategori-logo',function () {
         $id             = $(this).attr('id');
         for (var nesne in iceriklerArr){
@@ -879,7 +880,8 @@ function draw(dbDenGelen){
                     icerik.font_size *0.77+'px;left:'+
                     icerik.left+'px;font-style:'+
                     icerik.font_style+'; font-weight:'+
-                    icerik.font_weight+'; text-decoration:'+
+                    icerik.font_weight+'; line-height:'+
+                    (parseInt(icerik.font_height*2.5) + parseInt(icerik.font_size))+'px;text-decoration:'+
                     icerik.text_decoration+'; color:'+
                     icerik.color+';font-size:'+
                     icerik.font_size+'px;font-family:'+
