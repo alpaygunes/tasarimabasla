@@ -881,7 +881,7 @@ function draw(dbDenGelen){
                     icerik.left+'px;font-style:'+
                     icerik.font_style+'; font-weight:'+
                     icerik.font_weight+'; line-height:'+
-                    (parseInt(icerik.font_height*2.5) + parseInt(icerik.font_size))+'px;text-decoration:'+
+                    (parseInt(icerik.font_height*2.45) + parseInt(icerik.font_size))+'px;text-decoration:'+
                     icerik.text_decoration+'; color:'+
                     icerik.color+';font-size:'+
                     icerik.font_size+'px;font-family:'+

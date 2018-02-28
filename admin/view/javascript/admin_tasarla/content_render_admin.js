@@ -296,14 +296,14 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
                 sayac++;
                 $tr = "<tr>" +
                     "<td style='position: relative'>" +
-                    "<span>" + sayac + " " +icerik.karakter_limiti + " karakter</span>"+
-                    "<input type=\"text\" hedef=\""+icerik.id+"\" " + " value= \"" + tirnakVbSorunlar(icerik.text) + "\"" + "id=\"etiket"+icerik.id+"\""+
-                    ackapaAyarla(icerik.istemiyorum_chck) +
-                    " class=\"etiket-alani form-control\" maxlength =\"" + icerik.karakter_limiti + "\" placeholder=\"\">" +
+                        "<span>" + sayac + " " +icerik.karakter_limiti + " karakter</span>"+
+                        "<input type=\"text\" hedef=\""+icerik.id+"\" " + " value= \"" + tirnakVbSorunlar(icerik.text) + "\"" + "id=\"etiket"+icerik.id+"\""+
+                        ackapaAyarla(icerik.istemiyorum_chck) +
+                        " class=\"etiket-alani form-control\" maxlength =\"" + icerik.karakter_limiti + "\" placeholder=\"\">" +
                     "</td>" +
                     "<td>" +
-                    "<input type=\"checkbox\" "+  icerik.istemiyorum_chck  +" id=\"chckbox"+icerik.id+"\" hedef=\""+icerik.id+"\" class=\"yazi-eklemek-istemiyorum\" >" +
-                    "<label for=\"chckbox"+icerik.id+"\">Gizle / Göster</lable>"+
+                        "<input type=\"checkbox\" "+  icerik.istemiyorum_chck  +" id=\"chckbox"+icerik.id+"\" hedef=\""+icerik.id+"\" class=\"yazi-eklemek-istemiyorum\" >" +
+                        "<label for=\"chckbox"+icerik.id+"\">Gizle / Göster</lable>"+
                     "</td>" +
                     "<td>" +
                         "<div class='btn btn-primary txt_duzenle' hedef='"+icerik.id+"'>" +
@@ -321,30 +321,31 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
                 text_align = "text-align: center";
                 $tr = "<tr>" +
                     "<td>" +
-                    "<div style=\"border: 1px solid #ccc;box-shadow: 1px solid #ccc;text-align:"+icerik.text_align+"\">"+
-                    "<textarea type=\"text\" style=\"border: none;" +
-                    "box-shadow: none;" +
-                    "text-align: "+icerik.text_align+";" +
-                    "font-size: "+(icerik.font_size*.80)+"px;" +
-                    "font-family: "+icerik.font_family+";" +
-                    "width: "+icerik.width+"px;" +
-                    "\"" +
-                    "hedef=\""+icerik.id+"\" id=\"etiket"+icerik.id+"\""+
-                    ackapaAyarla(icerik.istemiyorum_chck) +
-                    " class=\"etiket-alani form-control\" placeholder=\" Yazı " + sayac + "\">"
-                    + csTirnakVbSorunlar(icerik) +
-                    "</textarea>" +
-                    "</div>"+
+                        "<div style=\"border: 1px solid #ccc;box-shadow: 1px solid #ccc;text-align:"+icerik.text_align+"\">"+
+                        "<textarea type=\"text\" style=\"border: none;" +
+                        "box-shadow: none;" +
+                        "text-align: "+icerik.text_align+";" +
+                        "font-size: "+(icerik.font_size*.80)+"px;" +
+                        "font-family: "+icerik.font_family+";" +
+                        "width: "+icerik.width+"px;" +
+                        "\"" +
+                        "hedef=\""+icerik.id+"\" id=\"etiket"+icerik.id+"\""+
+                        ackapaAyarla(icerik.istemiyorum_chck) +
+                        " class=\"etiket-alani form-control\" placeholder=\" Yazı " + sayac + "\">"
+                        + csTirnakVbSorunlar(icerik) +
+                        "</textarea>" +
+                        "</div>"+
                     "</td>"+
                     "<td>" +
-                    "<div class='onaylama-yeri'><i class=\"fa fa-check-square fa-2\"></i></div>"+
+                        "<input type=\"checkbox\" "+  icerik.istemiyorum_chck  +" id=\"chckbox"+icerik.id+"\" hedef=\""+icerik.id+"\" class=\"yazi-eklemek-istemiyorum\" >" +
+                        "<label for=\"chckbox"+icerik.id+"\">Gizle / Göster</lable>"+
                     "</td>"+
-                    "</tr>"+
-                    "<tr >" +
-                    "<td colspan='3'>" +
-                    "<input type=\"checkbox\" "+  icerik.istemiyorum_chck  +" id=\"chckbox"+icerik.id+"\" hedef=\""+icerik.id+"\" class=\"yazi-eklemek-istemiyorum\" >" +
-                    "<label  for=\"chckbox"+icerik.id+"\">Yazı eklemek istemiyorum</lable>"+
-                    "</td>"
+                    "<td>" +
+                        "<div class='btn btn-primary txt_duzenle' hedef='"+icerik.id+"'>" +
+                        "<i class=\"fa fa-pencil-square-o fa-2x \">" +
+                        "</i>" +
+                        "</div>" +
+                    "</td>"+
                 "</tr>";
                 $('#'+etiketler).append($tr);
 
@@ -390,6 +391,10 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
                 yeni_satirlar[yeni_Satir_no]='';
                 yeni_Satir_no++;
             }
+            if(value.length>1){
+                value = value.replace(/\n/g,'');
+                value = value.replace(/\r/g,'');
+            }
             for(var i = 0;i<value.length;i++){
                 $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
                 yeni_satirlar[yeni_Satir_no] = $("#Wolcum").html();
@@ -417,7 +422,11 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
         $.each(yeni_satirlar, function( index, value ) {
             value = value.replace(/\n/g,'');
             value = value.replace(/\r/g,'');
-            newTemp += value+'\r\n';
+            if(index<yeni_satirlar.length-1){
+                newTemp += value+'\r\n';
+            }else{
+                newTemp += value;
+            }
         })
 
 
