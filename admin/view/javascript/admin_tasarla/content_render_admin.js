@@ -4,10 +4,11 @@ var onizlemeIceriklerArr;
 var olcekleme_orani =1;
 
 
-var TopFarki=0;
-var LeftFarki;
+//var TopFarki=0;
+//var LeftFarki;
 var duzenleme_penceresi_oran_w = 0;
 var duzenleme_penceresi_oran_h = 0;
+var Duzenleniyor  = false;
 
 
 $(document).ready(function() {
@@ -821,9 +822,7 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                         }
                     }
 
-
                     if(icerik.tur=="cs_txt_kutu"){
-
                         var CursorLayer_w_attr   = $('#cnv_container').find('#CursorLayer').attr('width');
                         var canvas_genisligi     = $('#cnv_container').find('#CursorLayer').width();
                         var oran_w               =  canvas_genisligi/CursorLayer_w_attr
@@ -831,24 +830,26 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                         var canvas_yuksekligi    = $('#cnv_container').find('#CursorLayer').height();
                         var oran_h               = canvas_yuksekligi/CursorLayer_h_attr
 
-                        //if(TopFarki==0 || TopFarki=='sifirla'){
-                            $('.tuval-ogesi').show();
-                            TopFarki  =  Math.abs($('#kose_tutucu').parent().parent().offset().top - $('#kose_tutucu').offset().top);
-                            LeftFarki =  Math.abs($('#kose_tutucu').parent().parent().offset().left - $('#kose_tutucu').offset().left);
-                            console.log("$(this).offset().top   " + $('#kose_tutucu').offset().top);
-                            console.log("$(this).parent().left   " + $('#kose_tutucu').offset().left);
-                            console.log("TopFarki    " + TopFarki);
-                            console.log("LeftFarki    " + LeftFarki);
-                            if(TopFarki==0){
-                                $('.tuval-ogesi').hide();
+                        //if(sepet_icin!=1){
+                            if(Duzenleniyor){
+                                $('.tuval-ogesi').show();
+                                icerik.TopFarki  =  Math.abs($('#'+icerik.id+' #kose_tutucu').parent().parent().offset().top - $('#'+icerik.id+' #kose_tutucu').offset().top);
+                                icerik.LeftFarki =  Math.abs($('#'+icerik.id+' #kose_tutucu').parent().parent().offset().left - $('#'+icerik.id+' #kose_tutucu').offset().left);
+                                icerik.oran_w       = oran_w;
+                                icerik.oran_h       = oran_h;
+                                if(icerik.TopFarki==0){
+                                    $('.tuval-ogesi').hide();
+                                }
+                            }else{
+                                oran_w      = icerik.oran_w ;
+                                oran_h      = icerik.oran_h;
                             }
                         //}
 
-                        if(duzenleme_penceresi_oran_w!=0){
-                            oran_h = duzenleme_penceresi_oran_h;
-                            oran_w = duzenleme_penceresi_oran_w;
-                        }
-
+                        //if(sepet_icin==1){
+                            //oran_w      = icerik.oran_w ;
+                            //oran_h      = icerik.oran_h;
+                        //}
 
                         icerik.text = (icerik.text==undefined?'':icerik.text)
                         var lines = icerik.text.split('\n');
@@ -868,19 +869,19 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                                 $x              = icerik.width*.5;
                                 $y              = icerik.font_size*(i+1);
                                 $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
-                                ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
+                                ctx.translate(icerik.LeftFarki/oran_w , icerik.TopFarki/oran_h);
                             }else if(icerik.text_align=='left'){
                                 ctx.textAlign   = icerik.text_align;
                                 $x              = 0;
                                 $y              = icerik.font_size*(i+1);
                                 $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
-                                ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
+                                ctx.translate(icerik.LeftFarki/oran_w , icerik.TopFarki/oran_h);
                             }else if(icerik.text_align=='right'){
                                 ctx.textAlign   = icerik.text_align;
                                 $x              = icerik.width;
                                 $y              = icerik.font_size*(i+1);
                                 $y              = parseInt($y) + parseInt(icerik.font_height)*(i+1)
-                                ctx.translate(LeftFarki/oran_w , TopFarki/oran_h);
+                                ctx.translate(icerik.LeftFarki/oran_w , icerik.TopFarki/oran_h);
                             }
 
                             ctx.rotate(icerik.rotation);
@@ -980,9 +981,14 @@ $(document).ready(function() {
         $('#txtFontRenkKonumModal').on('shown.bs.modal', function() {
             editorTuvalineCiz(editorIceriklerArr);
             $('#editor-canvas #'+editor_hedef_txt_id).css('border','#00FF00 solid 1px');
+            Duzenleniyor = true;
         })
         fontListesiniYenidenAnlandir();
         hedefKutUdakiYaziyaGoreFontKutusunuYenile();
+        $('#txtFontRenkKonumModal').on('hidden.bs.modal', function () {
+            Duzenleniyor = false;
+            ciz(iceriklerArr);
+        })
     })
     //tıklanan öğenin borderlerini yeşille
     $('#editor-canvas').on('mousedown','.tuval-ogesi', function () {
