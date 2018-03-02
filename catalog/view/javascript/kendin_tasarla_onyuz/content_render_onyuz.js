@@ -223,6 +223,7 @@ function daireselYaziIcinfontBoyuntunuHesapla(icerik){
 }
 
 function ciz(){
+    csTxtkutularınınFontunuKutuyaUydur(iceriklerArr);
     etiketAlaniniOlustur(iceriklerArr,'etiketler');
     resimEklemeDugmeleriniOlustur(iceriklerArr,'etiketler');
     $('#cnv_container').empty();
@@ -231,6 +232,7 @@ function ciz(){
     belirteclereTiklanincaGirisYapilsin()
     resimTutucularaTiklaninca();
     resimEklemeDugmelerineTiklaninca();
+    csTxtkutularınınFontunuKutuyaUydur(iceriklerArr);
     // mobilde ekrana sigdir
     var sayfanin_genisligi   = $( '#tasarim-alani' ).width()*.9;
     var canvas_genisligi     = $('#CursorLayer').width();
@@ -243,6 +245,86 @@ function ciz(){
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
+    for (var k in iceriklerArr) {
+        icerik = iceriklerArr[k];
+        $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
+        $("#Wwolcum").empty();
+        if (icerik.text.length>0) {
+            if (icerik.tur == "cs_txt_kutu") {
+                $("#Wwolcum").css('font-family',icerik.font_family)
+                $("#Wwolcum").css('font-size',icerik.font_size+"px")
+                $("#Wwolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
+                $("#Wwolcum").html(icerik.text)
+                satir_yuksekligi                = $("#Wwolcum").innerHeight();
+
+                var satirlar = icerik.text.split('\n');
+
+
+
+                if(icerik.font_size_orj==undefined){
+                    icerik.font_size_orj = icerik.font_size;
+                }
+                if(icerik.font_height_orj==undefined){
+                    icerik.font_height_orj = icerik.font_height;
+                }
+                if(satir_yuksekligi*satirlar.length+1>icerik.height){
+                    tasankisim = satir_yuksekligi*satirlar.length - icerik.height;//taşan kısım
+                    //satır başına düşen taşma oranı
+                    satirbasina_dusen_tasma_miktari = tasankisim/satirlar.length;
+                    icerik.font_size    -= satirbasina_dusen_tasma_miktari/2;
+                    icerik.font_height  -= satirbasina_dusen_tasma_miktari/2;
+                }
+
+                if(satir_yuksekligi*satirlar.length+1<icerik.height){
+                    eksik_kisim = icerik.height - satir_yuksekligi*satirlar.length
+                    //satır başına düşen eksik_kisim
+                    satirbasina_dusen_eksik_kisim = eksik_kisim/satirlar.length;
+                    icerik.font_size    += satirbasina_dusen_eksik_kisim/2;
+                    icerik.font_height  += satirbasina_dusen_eksik_kisim/2;
+                }
+
+                if(icerik.font_size>icerik.font_size_orj){
+                    icerik.font_size = icerik.font_size_orj
+                    icerik.font_height = icerik.font_height_orj
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function txtKonumFontRenkDuzenlemeDugmesiniOlustur(hedef_txt_id,kutuda_yazan){
     editor_hedef_txt_id = hedef_txt_id;
@@ -952,21 +1034,16 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
 
 
 
-
-
-
-
-
-
-
     function csTirnakVbSorunlar(icerik) {
         text = icerik.text_uzun_hali
         if(text!=undefined){
-            newTemp = text.replace(/"/g, "&quot;");
+            //newTemp = text.replace(/"/g, "&quot;");
+            newTemp = text
         }
 
         if(icerik.text!=undefined){
-            newTemp = icerik.text.replace(/"/g, "&quot;");
+            //newTemp = icerik.text.replace(/"/g, "&quot;");
+            newTemp = icerik.text
         }
 
         // tırnak temizlendikten sonra
@@ -974,10 +1051,12 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
         $("#Wolcum").css('font-family',icerik.font_family)
         $("#Wolcum").css('font-size',icerik.font_size+"px")
+        $("#Wolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
         $("#Wolcum").empty();
 
         var satirlar = newTemp.split('\n');
-        var yeni_satirlar = ['']
+        var yeni_satirlar = [''];
+        var satir_yuksekligi = 0;
         yeni_Satir_no =0;
         $.each(satirlar, function( index, value ) {
             if(value.length==0 && index<satirlar.length-1){
@@ -1016,6 +1095,7 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         $.each(yeni_satirlar, function( index, value ) {
             value = value.replace(/\n/g,'');
             value = value.replace(/\r/g,'');
+            value = value.replace(/&amp;/g, "&");
             if(index<yeni_satirlar.length-1){
                 newTemp += value+'\r\n';
             }else{
@@ -1023,35 +1103,9 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
             }
         })
 
-
-
         icerik.text=newTemp;
         return newTemp;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1059,7 +1113,6 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         newTemp = text.replace(/"/g, "&quot;");
         return newTemp;
     }
-
 
 
 

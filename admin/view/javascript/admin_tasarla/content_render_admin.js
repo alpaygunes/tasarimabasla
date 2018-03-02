@@ -370,11 +370,11 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
     function csTirnakVbSorunlar(icerik) {
         text = icerik.text_uzun_hali
         if(text!=undefined){
-            newTemp = text.replace(/"/g, "&quot;");
+            //newTemp = text.replace(/"/g, "&quot;");
         }
 
         if(icerik.text!=undefined){
-            newTemp = icerik.text.replace(/"/g, "&quot;");
+            //newTemp = icerik.text.replace(/"/g, "&quot;");
         }
 
         // tırnak temizlendikten sonra
@@ -385,7 +385,7 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
         $("#Wolcum").empty();
 
         var satirlar = newTemp.split('\n');
-        var yeni_satirlar = ['']
+        var yeni_satirlar = [''];
         yeni_Satir_no =0;
         $.each(satirlar, function( index, value ) {
             if(value.length==0 && index<satirlar.length-1){
@@ -398,7 +398,7 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
             }
             for(var i = 0;i<value.length;i++){
                 $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
-                yeni_satirlar[yeni_Satir_no] = $("#Wolcum").html();
+                yeni_satirlar[yeni_Satir_no]    = $("#Wolcum").html();
                 if($("#Wolcum").innerWidth()>icerik.width){
                     $("#Wolcum").empty();
                     if(i==value.length-1){
@@ -423,6 +423,7 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
         $.each(yeni_satirlar, function( index, value ) {
             value = value.replace(/\n/g,'');
             value = value.replace(/\r/g,'');
+            value = value.replace(/&amp;/g, "&");
             if(index<yeni_satirlar.length-1){
                 newTemp += value+'\r\n';
             }else{
