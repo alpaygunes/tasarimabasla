@@ -918,7 +918,7 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
                 $tr = "<tr>" +
                     txtKonumFontRenkDuzenlemeDugmesiniOlustur(icerik.id,icerik.text) +
                     "<td>" +
-                    "<div style=\"border: 1px solid #ccc;box-shadow: 1px solid #ccc;text-align:"+icerik.text_align+"\">"+
+                    "<div class='cs-sarici' style=\"border: 2px solid #ccc;box-shadow: 1px solid #ccc;text-align:"+icerik.text_align+"\">"+
                     "<textarea type=\"text\" style=\"border: none;" +
                     "box-shadow: none;" +
                     "text-align: "+icerik.text_align+";" +
@@ -971,7 +971,7 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
 
         // tırnak temizlendikten sonra
         // yazının genişliğini ölçmek için div ekleyelim
-        $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:200px;left:10px;border: 5px solid #ccc\"></div>")
+        $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
         $("#Wolcum").css('font-family',icerik.font_family)
         $("#Wolcum").css('font-size',icerik.font_size+"px")
         $("#Wolcum").empty();

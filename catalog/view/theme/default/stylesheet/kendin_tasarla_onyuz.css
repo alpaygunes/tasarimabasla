@@ -8,6 +8,15 @@
     background-color: red;
 }
 
+
+@media screen and (max-width: 768px) and (min-width: 0px) {
+    .right .alanseti{
+        zoom: 0.8;
+    }
+}
+
+
+
 #tasarim-alani{
     width: 100%;
     margin-top: 15px;
@@ -102,12 +111,17 @@
 }
 
 #etiketler input[type=text]{
-    /*width: 295px!important;*/
-    border: 1px solid #b3b3b3;
-    /*border-radius: 3px;*/
-    /*box-shadow: 3px 3px 3px #e8e8e8 inset;*/
+    border: 2px solid #e8e8e8;
     height: 32px!important;
     font-size: 15px;
+}
+
+#etiketler input[type=text]:focus{
+    border: 2px solid #6288df !important;
+}
+
+#etiketler .cs-sarici:hover{
+    border: 2px solid #6288df!important;
 }
 
 
