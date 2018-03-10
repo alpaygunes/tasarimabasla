@@ -330,8 +330,8 @@ function txtKonumFontRenkDuzenlemeDugmesiniOlustur(hedef_txt_id,kutuda_yazan){
     editor_hedef_txt_id = hedef_txt_id;
     $td = "<td>" +
             "<div class='yazilariDuzenle' " +
-                "hedef_txt_kutu='"+hedef_txt_id + "'" +
-                "kutuda_yazan='"+kutuda_yazan + "'>" +
+                "hedef_txt_kutu='"+hedef_txt_id + "' " +
+                "kutuda_yazan=\""+kutuda_yazan + "\">" +
                 "<i class='fa fa-pencil-square-o' aria-hidden='true'></i>"+
             "</div>"+
         "</td>";
@@ -1032,98 +1032,115 @@ function etiketAlaniniOlustur(iceriklerArr,etiketler) {
         }
     }
 
+}
 
 
-    function csTirnakVbSorunlar(icerik) {
-        text = icerik.text_uzun_hali
-        if(text!=undefined){
-            //newTemp = text.replace(/"/g, "&quot;");
-            newTemp = text
+function csTirnakVbSorunlar(icerik) {
+    text = icerik.text_uzun_hali
+    if(text!=undefined){
+        //newTemp = text.replace(/"/g, "&quot;");
+        newTemp = text
+    }
+
+    if(icerik.text!=undefined){
+        //newTemp = icerik.text.replace(/"/g, "&quot;");
+        newTemp = icerik.text
+    }
+
+    // tırnak temizlendikten sonra
+    // yazının genişliğini ölçmek için div ekleyelim
+    $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
+    $("#Wolcum").css('font-family',icerik.font_family)
+    $("#Wolcum").css('font-size',icerik.font_size+"px")
+    $("#Wolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
+    $("#Wolcum").empty();
+
+    var satirlar = newTemp.split('\n');
+    var yeni_satirlar = [''];
+    var satir_yuksekligi = 0;
+    yeni_Satir_no =0;
+    $.each(satirlar, function( index, value ) {
+        if(value.length==0 && index<satirlar.length-1){
+            yeni_satirlar[yeni_Satir_no]='';
+            yeni_Satir_no++;
         }
 
-        if(icerik.text!=undefined){
-            //newTemp = icerik.text.replace(/"/g, "&quot;");
-            newTemp = icerik.text
-        }
-
-        // tırnak temizlendikten sonra
-        // yazının genişliğini ölçmek için div ekleyelim
-        $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
-        $("#Wolcum").css('font-family',icerik.font_family)
-        $("#Wolcum").css('font-size',icerik.font_size+"px")
-        $("#Wolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
-        $("#Wolcum").empty();
-
-        var satirlar = newTemp.split('\n');
-        var yeni_satirlar = [''];
-        var satir_yuksekligi = 0;
-        yeni_Satir_no =0;
-        $.each(satirlar, function( index, value ) {
-            if(value.length==0 && index<satirlar.length-1){
-                yeni_satirlar[yeni_Satir_no]='';
-                yeni_Satir_no++;
-            }
-
-            if(value.length>1){
-                value = value.replace(/\n/g,'');
-                value = value.replace(/\r/g,'');
-            }
-            for(var i = 0;i<value.length;i++){
-                $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
-                yeni_satirlar[yeni_Satir_no] = $("#Wolcum").html();
-                if($("#Wolcum").innerWidth()>icerik.width){
-                    $("#Wolcum").empty();
-                    if(i==value.length-1){
-                        continue;
-                    }
-                    yeni_Satir_no++;
-                    if( yeni_satirlar[yeni_Satir_no]!=undefined){
-                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i) + yeni_satirlar[yeni_Satir_no]
-                    }else {
-                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i)
-                    }
-                }
-            }
-            $("#Wolcum").empty()
-            if(value.length>0){
-                yeni_Satir_no++;
-            }
-        });
-
-        console.log(yeni_satirlar)
-        newTemp='';
-        $.each(yeni_satirlar, function( index, value ) {
+        if(value.length>1){
             value = value.replace(/\n/g,'');
             value = value.replace(/\r/g,'');
-            value = value.replace(/&amp;/g, "&");
-            if(index<yeni_satirlar.length-1){
-                newTemp += value+'\r\n';
-            }else{
-                newTemp += value;
-            }
-        })
-
-        icerik.text=newTemp;
-        return newTemp;
-    }
-
-
-
-    function tirnakVbSorunlar(text) {
-        newTemp = text.replace(/"/g, "&quot;");
-        return newTemp;
-    }
-
-
-
-
-    function ackapaAyarla(durum){
-        if(typeof durum!="undefined"){
-            return "disabled";
         }
-        return "";
-    }
+        for(var i = 0;i<value.length;i++){
+            $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
+            yeni_satirlar[yeni_Satir_no] = $("#Wolcum").html();
+            if($("#Wolcum").innerWidth()>icerik.width){
+                $("#Wolcum").empty();
+                if(i==value.length-1){
+                    continue;
+                }
+                yeni_Satir_no++;
+                if( yeni_satirlar[yeni_Satir_no]!=undefined){
+                    yeni_satirlar[yeni_Satir_no] =  value.charAt(i) + yeni_satirlar[yeni_Satir_no]
+                }else {
+                    yeni_satirlar[yeni_Satir_no] =  value.charAt(i)
+                }
+            }
+        }
+        $("#Wolcum").empty()
+        if(value.length>0){
+            yeni_Satir_no++;
+        }
+    });
+
+    console.log(yeni_satirlar)
+    newTemp='';
+    $.each(yeni_satirlar, function( index, value ) {
+        value = value.replace(/\n/g,'');
+        value = value.replace(/\r/g,'');
+        value = value.replace(/&amp;/g, "&");
+        value = value.replace(/&lt;/g, "<");
+        value = value.replace(/&gt;/g, ">");
+
+        if(index<yeni_satirlar.length-1){
+            newTemp += value+'\r\n';
+        }else{
+            newTemp += value;
+        }
+    })
+
+    icerik.text=newTemp;
+
+    //newTemp = newTemp.replace(/'/g, "&#39;");
+    return newTemp;
 }
+
+
+
+function tirnakVbSorunlar(text) {
+    newTemp = text.replace(/"/g, "&quot;");
+    return newTemp;
+}
+
+
+
+
+function ackapaAyarla(durum){
+    if(typeof durum!="undefined"){
+        return "disabled";
+    }
+    return "";
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////    ÖNYÜZDEKİ FONT RENK KONUM DEĞİŞTRME EKRANI İÇİN   //////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1220,6 +1237,9 @@ $(document).ready(function() {
                         fontBoyuntunuHesapla(icerik);
                     }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
+                    }else if(icerik.tur == 'cs_txt_kutu'){
+                        icerik.text = csTirnakVbSorunlar(icerik)
+                        csTxtkutularınınFontunuKutuyaUydur(editorIceriklerArr)
                     }
                     //hedefKutUdakiYaziyaGoreFontKutusunuYenile(icerik.text)
                     editorTuvalineCiz(editorIceriklerArr);
@@ -1227,6 +1247,7 @@ $(document).ready(function() {
                 }
             }
         }
+
         //$('#editor-font-listesi').css('font-family',$( "#editor-font-listesi option:selected" ).val())
     })
 

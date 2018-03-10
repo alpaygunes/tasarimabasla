@@ -58,7 +58,9 @@
                     onizleme_link="<?php echo $product['onizleme_href'];?>"><?php if ($product['thumb']) { ?>
                   <a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-thumbnail" /></a>
                   <?php } ?></td>
-                <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
+                <td class="text-left name">
+                    <!-- <a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a> -->
+                    <?php echo $product['name']; ?>
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
                   <?php } ?>

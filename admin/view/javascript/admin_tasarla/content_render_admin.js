@@ -140,11 +140,62 @@ $(document).ready(function() {
 });
 
 function ciz(){
+    csTxtkutularınınFontunuKutuyaUydur(onizlemeIceriklerArr);
     etiketAlaniniOlustur(onizlemeIceriklerArr,'etiketler');
     resimEklemeDugmeleriniOlustur(onizlemeIceriklerArr,'etiketler');
     $('#cnv_container').empty();
     $('#cnv_container').append(canvasRender(onizlemeIceriklerArr,$('#tuval').width(),$('#tuval').height()));
     resimEklemeDugmelerineTiklaninca();
+    csTxtkutularınınFontunuKutuyaUydur(onizlemeIceriklerArr);
+}
+
+
+function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
+    for (var k in iceriklerArr) {
+        icerik = iceriklerArr[k];
+        $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
+        $("#Wwolcum").empty();
+        if (icerik.text.length>0) {
+            if (icerik.tur == "cs_txt_kutu") {
+                $("#Wwolcum").css('font-family',icerik.font_family)
+                $("#Wwolcum").css('font-size',icerik.font_size+"px")
+                $("#Wwolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
+                $("#Wwolcum").html(icerik.text)
+                satir_yuksekligi                = $("#Wwolcum").innerHeight();
+
+                var satirlar = icerik.text.split('\n');
+
+
+
+                if(icerik.font_size_orj==undefined){
+                    icerik.font_size_orj = icerik.font_size;
+                }
+                if(icerik.font_height_orj==undefined){
+                    icerik.font_height_orj = icerik.font_height;
+                }
+                if(satir_yuksekligi*satirlar.length+1>icerik.height){
+                    tasankisim = satir_yuksekligi*satirlar.length - icerik.height;//taşan kısım
+                    //satır başına düşen taşma oranı
+                    satirbasina_dusen_tasma_miktari = tasankisim/satirlar.length;
+                    icerik.font_size    -= satirbasina_dusen_tasma_miktari/2;
+                    icerik.font_height  -= satirbasina_dusen_tasma_miktari/2;
+                }
+
+                if(satir_yuksekligi*satirlar.length+1<icerik.height){
+                    eksik_kisim = icerik.height - satir_yuksekligi*satirlar.length
+                    //satır başına düşen eksik_kisim
+                    satirbasina_dusen_eksik_kisim = eksik_kisim/satirlar.length;
+                    icerik.font_size    += satirbasina_dusen_eksik_kisim/2;
+                    icerik.font_height  += satirbasina_dusen_eksik_kisim/2;
+                }
+
+                if(icerik.font_size>icerik.font_size_orj){
+                    icerik.font_size = icerik.font_size_orj
+                    icerik.font_height = icerik.font_height_orj
+                }
+            }
+        }
+    }
 }
 
 function fontBoyuntunuHesapla(icerik){
@@ -365,93 +416,106 @@ function etiketAlaniniOlustur(onizlemeIceriklerArr,etiketler) {
             }
         }
     }
+}
 
 
-    function csTirnakVbSorunlar(icerik) {
-        text = icerik.text_uzun_hali
-        if(text!=undefined){
-            //newTemp = text.replace(/"/g, "&quot;");
+
+function csTirnakVbSorunlar(icerik) {
+    text = icerik.text_uzun_hali
+    if(text!=undefined){
+        //newTemp = text.replace(/"/g, "&quot;");
+        newTemp = text
+    }
+
+    if(icerik.text!=undefined){
+        //newTemp = icerik.text.replace(/"/g, "&quot;");
+        newTemp = icerik.text
+    }
+
+    // tırnak temizlendikten sonra
+    // yazının genişliğini ölçmek için div ekleyelim
+    $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:200px;left:10px;border: 5px solid #ccc\"></div>")
+    $("#Wolcum").css('font-family',icerik.font_family)
+    $("#Wolcum").css('font-size',icerik.font_size+"px")
+    $("#Wolcum").empty();
+
+    var satirlar = newTemp.split('\n');
+    var yeni_satirlar = [''];
+    yeni_Satir_no =0;
+    $.each(satirlar, function( index, value ) {
+        if(value.length==0 && index<satirlar.length-1){
+            yeni_satirlar[yeni_Satir_no]='';
+            yeni_Satir_no++;
         }
-
-        if(icerik.text!=undefined){
-            //newTemp = icerik.text.replace(/"/g, "&quot;");
-        }
-
-        // tırnak temizlendikten sonra
-        // yazının genişliğini ölçmek için div ekleyelim
-        $("#container").prepend("<div id='Wolcum' style=\"z-index: 9999; position: fixed;top:200px;left:10px;border: 5px solid #ccc\"></div>")
-        $("#Wolcum").css('font-family',icerik.font_family)
-        $("#Wolcum").css('font-size',icerik.font_size+"px")
-        $("#Wolcum").empty();
-
-        var satirlar = newTemp.split('\n');
-        var yeni_satirlar = [''];
-        yeni_Satir_no =0;
-        $.each(satirlar, function( index, value ) {
-            if(value.length==0 && index<satirlar.length-1){
-                yeni_satirlar[yeni_Satir_no]='';
-                yeni_Satir_no++;
-            }
-            if(value.length>1){
-                value = value.replace(/\n/g,'');
-                value = value.replace(/\r/g,'');
-            }
-            for(var i = 0;i<value.length;i++){
-                $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
-                yeni_satirlar[yeni_Satir_no]    = $("#Wolcum").html();
-                if($("#Wolcum").innerWidth()>icerik.width){
-                    $("#Wolcum").empty();
-                    if(i==value.length-1){
-                        continue;
-                    }
-                    yeni_Satir_no++;
-                    if( yeni_satirlar[yeni_Satir_no]!=undefined){
-                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i) + yeni_satirlar[yeni_Satir_no]
-                    }else {
-                        yeni_satirlar[yeni_Satir_no] =  value.charAt(i)
-                    }
-                }
-            }
-            $("#Wolcum").empty()
-            if(value.length>0){
-                yeni_Satir_no++;
-            }
-        });
-
-        console.log(yeni_satirlar)
-        newTemp='';
-        $.each(yeni_satirlar, function( index, value ) {
+        if(value.length>1){
             value = value.replace(/\n/g,'');
             value = value.replace(/\r/g,'');
-            value = value.replace(/&amp;/g, "&");
-            if(index<yeni_satirlar.length-1){
-                newTemp += value+'\r\n';
-            }else{
-                newTemp += value;
-            }
-        })
-
-
-
-        icerik.text=newTemp;
-        return newTemp;
-    }
-
-
-
-    function tirnakVbSorunlar(text) {
-        newTemp = text.replace(/"/g, "&quot;");
-        return newTemp;
-    }
-
-
-    function ackapaAyarla(durum){
-        if(typeof durum=="undefined"){
-            return "disabled";
         }
-        return "";
-    }
+        for(var i = 0;i<value.length;i++){
+            $("#Wolcum").html($("#Wolcum").html()+value.charAt(i))
+            yeni_satirlar[yeni_Satir_no]    = $("#Wolcum").html();
+            if($("#Wolcum").innerWidth()>icerik.width){
+                $("#Wolcum").empty();
+                if(i==value.length-1){
+                    continue;
+                }
+                yeni_Satir_no++;
+                if( yeni_satirlar[yeni_Satir_no]!=undefined){
+                    yeni_satirlar[yeni_Satir_no] =  value.charAt(i) + yeni_satirlar[yeni_Satir_no]
+                }else {
+                    yeni_satirlar[yeni_Satir_no] =  value.charAt(i)
+                }
+            }
+        }
+        $("#Wolcum").empty()
+        if(value.length>0){
+            yeni_Satir_no++;
+        }
+    });
+
+    console.log(yeni_satirlar)
+    newTemp='';
+    $.each(yeni_satirlar, function( index, value ) {
+        value = value.replace(/\n/g,'');
+        value = value.replace(/\r/g,'');
+        value = value.replace(/&amp;/g, "&");
+        if(index<yeni_satirlar.length-1){
+            newTemp += value+'\r\n';
+        }else{
+            newTemp += value;
+        }
+    })
+
+
+
+    icerik.text=newTemp;
+    return newTemp;
 }
+
+
+
+function tirnakVbSorunlar(text) {
+    newTemp = text.replace(/"/g, "&quot;");
+    return newTemp;
+}
+
+
+function ackapaAyarla(durum){
+    if(typeof durum=="undefined"){
+        return "disabled";
+    }
+    return "";
+}
+
+
+
+
+
+
+
+
+
+
 
 function gizleGosterAyarla(durum){
     if(typeof durum!="undefined"){
@@ -600,7 +664,7 @@ function etiketBelirtecleriniOlustur(iceriklerArr,tuval){
 function classAyarla(){
     if(icerik.bicim=='dairesel'){
         return " txt_kutu tuval-ogesi txt_kutu-dairesel";
-    }else if(icerik.bicim=='txt_kutu'){
+    }else if(icerik.tur=='txt_kutu'){
         return "txt_kutu tuval-ogesi txt_kutu-tek-satir";
     }else if(icerik.tur=='cs_txt_kutu'){
         return "txt_kutu tuval-ogesi txt_kutu-tek-satir";
@@ -858,7 +922,7 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                         icerik.text = (icerik.text==undefined?'':icerik.text)
                         var lines = icerik.text.split('\n');
                         for(var i = 0;i < lines.length;i++){
-                            ctx.setTransform(1, 0, 0, 1, 0, 0);
+                            ctx.setTransform(olcekleme_orani, 0, 0, olcekleme_orani, 0, 0);
                             icerik_text = lines[i];
                             var $x              = 0;
                             var $y              = 0;
@@ -1058,6 +1122,9 @@ $(document).ready(function() {
                         fontBoyuntunuHesapla(icerik);
                     }else if(icerik.tur == 'txt_kutu' && icerik.bicim == 'dairesel'){
                         daireselYaziIcinfontBoyuntunuHesapla(icerik);
+                    }else if(icerik.tur == 'cs_txt_kutu'){
+                        icerik.text = csTirnakVbSorunlar(icerik)
+                        csTxtkutularınınFontunuKutuyaUydur(editorIceriklerArr)
                     }
                     //hedefKutUdakiYaziyaGoreFontKutusunuYenile(icerik.text)
                     editorTuvalineCiz(editorIceriklerArr);
@@ -1232,6 +1299,7 @@ $(document).ready(function() {
 });
 
 function editorTuvalineCiz(editorIceriklerArr){
+    //csTxtkutularınınFontunuKutuyaUydur(editorIceriklerArr)
     $('#editor-canvas').empty();
     $('#editor-canvas').append(canvasRender_onyuz(editorIceriklerArr,$('#tuval').width(),$('#tuval').height()));//burdaki tuvaller gereksiz gibi
     etiketBelirtecleriniOlustur(editorIceriklerArr,$('#editor-canvas'));
