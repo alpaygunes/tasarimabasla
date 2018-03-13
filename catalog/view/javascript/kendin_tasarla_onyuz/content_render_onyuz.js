@@ -247,20 +247,10 @@ function ciz(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
 function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
+    $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-200px;border: 5px solid #ccc\"></div>")
     for (var k in iceriklerArr) {
         icerik = iceriklerArr[k];
-        $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
         $("#Wwolcum").empty();
         if (icerik.text.length>0) {
             if (icerik.tur == "cs_txt_kutu") {
@@ -280,15 +270,13 @@ function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
                 if(icerik.font_height_orj==undefined){
                     icerik.font_height_orj = icerik.font_height;
                 }
-                if(satir_yuksekligi*satirlar.length+1>icerik.height){
-                    tasankisim = satir_yuksekligi*satirlar.length - icerik.height;//taşan kısım
+                if(satir_yuksekligi*satirlar.length>icerik.height){
+                    oran =  icerik.height/satirlar.length; //satirbasiına düşen yükseklik oranı
                     //satır başına düşen taşma oranı
-                    satirbasina_dusen_tasma_miktari = tasankisim/satirlar.length;
-                    icerik.font_size    -= satirbasina_dusen_tasma_miktari/2;
-                    icerik.font_height  -= satirbasina_dusen_tasma_miktari/2;
-                }
-
-                if(satir_yuksekligi*satirlar.length+1<icerik.height){
+                    //satirbasina_dusen_tasma_miktari = tasankisim/satirlar.length;
+                    icerik.font_size    = oran*.5;
+                    icerik.font_height  = oran*.5;
+                }else if(satir_yuksekligi*satirlar.length+1<icerik.height){
                     eksik_kisim = icerik.height - satir_yuksekligi*satirlar.length
                     //satır başına düşen eksik_kisim
                     satirbasina_dusen_eksik_kisim = eksik_kisim/satirlar.length;
@@ -303,6 +291,7 @@ function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
             }
         }
     }
+    $("#Wwolcum").remove();
 }
 
 

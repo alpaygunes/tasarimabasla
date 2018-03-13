@@ -9,12 +9,12 @@ var olcekleme_orani =1;
 var duzenleme_penceresi_oran_w = 0;
 var duzenleme_penceresi_oran_h = 0;
 var Duzenleniyor  = false;
-
+var onzileme_icin_ciz = false;
 
 $(document).ready(function() {
 
 
-    // bu metoto admin tasarımın altındaki ön izleme için
+    // bu metoto admin tasarımın altındaki ön izleme içi
     $('#onizleme').click(function () {
         onizlemeIceriklerArr = JSON.parse(JSON.stringify(iceriklerArr));
         // ilk çizimde goster anahtarı ekleyip true yapalımki görünsz
@@ -24,6 +24,7 @@ $(document).ready(function() {
                 icerik.istemiyorum_chck       = "checked";
             }
         }
+        onzileme_icin_ciz = true;
         ciz();
     })
 
@@ -151,10 +152,13 @@ function ciz(){
 
 
 function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
+    $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
     for (var k in iceriklerArr) {
         icerik = iceriklerArr[k];
-        $("#container").prepend("<div id='Wwolcum' style=\"z-index: 9999; position: fixed;top:-200px;left:-100px;border: 5px solid #ccc\"></div>")
         $("#Wwolcum").empty();
+        if(icerik.text==undefined){
+            return;
+        }
         if (icerik.text.length>0) {
             if (icerik.tur == "cs_txt_kutu") {
                 $("#Wwolcum").css('font-family',icerik.font_family)
@@ -162,11 +166,7 @@ function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
                 $("#Wwolcum").css('line-height',(parseInt(icerik.font_height) + parseInt(icerik.font_size))+"px")
                 $("#Wwolcum").html(icerik.text)
                 satir_yuksekligi                = $("#Wwolcum").innerHeight();
-
                 var satirlar = icerik.text.split('\n');
-
-
-
                 if(icerik.font_size_orj==undefined){
                     icerik.font_size_orj = icerik.font_size;
                 }
@@ -181,7 +181,13 @@ function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
                     icerik.font_height  -= satirbasina_dusen_tasma_miktari/2;
                 }
 
-                if(satir_yuksekligi*satirlar.length+1<icerik.height){
+                if(satir_yuksekligi*satirlar.length>icerik.height){
+                    oran =  icerik.height/satirlar.length; //satirbasiına düşen yükseklik oranı
+                    //satır başına düşen taşma oranı
+                    //satirbasina_dusen_tasma_miktari = tasankisim/satirlar.length;
+                    icerik.font_size    = oran*.5;
+                    icerik.font_height  = oran*.5;
+                }else if(satir_yuksekligi*satirlar.length+1<icerik.height){
                     eksik_kisim = icerik.height - satir_yuksekligi*satirlar.length
                     //satır başına düşen eksik_kisim
                     satirbasina_dusen_eksik_kisim = eksik_kisim/satirlar.length;
@@ -916,6 +922,21 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
                             //oran_h      = icerik.oran_h;
                         //}
                             */
+
+
+                        if(onzileme_icin_ciz){
+                            $('.tuval-ogesi').show();
+                            icerik.TopFarki  =  Math.abs($('#'+icerik.id+' #kose_tutucu').parent().parent().offset().top - $('#'+icerik.id+' #kose_tutucu').offset().top);
+                            icerik.LeftFarki =  Math.abs($('#'+icerik.id+' #kose_tutucu').parent().parent().offset().left - $('#'+icerik.id+' #kose_tutucu').offset().left);
+                            icerik.oran_w       = oran_w;
+                            icerik.oran_h       = oran_h;
+                            if(icerik.TopFarki==0){
+                                $('.tuval-ogesi').hide();
+                            }
+                        }
+
+
+
                         oran_w      = icerik.oran_w ;
                         oran_h      = icerik.oran_h;
 
