@@ -824,9 +824,6 @@ function canvasRender(onizlemeIceriklerArr,genislik,yukseklik){
     }
     //---------------------------------------------------------
 
-
-
-
     // ---------------------yazıları yazalım --------------------------
     function  txtKutulariyazalim(){
         for (var k in onizlemeIceriklerArr){

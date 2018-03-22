@@ -317,11 +317,11 @@ function csTxtkutularınınFontunuKutuyaUydur(iceriklerArr) {
 
 function txtKonumFontRenkDuzenlemeDugmesiniOlustur(hedef_txt_id,kutuda_yazan){
     editor_hedef_txt_id = hedef_txt_id;
-    $td = "<td>" +
+    $td = "<td style='width: 90px'>" +
             "<div class='yazilariDuzenle' " +
                 "hedef_txt_kutu='"+hedef_txt_id + "' " +
                 "kutuda_yazan=\""+kutuda_yazan + "\">" +
-                "<i class='fa fa-pencil-square-o' aria-hidden='true'></i>"+
+                "<i class='fa fa-font' style='float: left'></i> <div>Yazı Tipi</div>"+
             "</div>"+
         "</td>";
     return $td;

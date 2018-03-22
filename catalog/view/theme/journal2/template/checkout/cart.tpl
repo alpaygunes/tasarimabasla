@@ -1,8 +1,8 @@
-﻿<?php echo $header; ?>
+<?php echo $header; ?>
 <div id="container" class="container j-container">
   <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-    <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+    <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="<?php echo $breadcrumb['href']; ?>" itemprop="url"><span itemprop="title"><?php echo $breadcrumb['text']; ?></span></a></li>
     <?php } ?>
   </ul>
   <?php if ($attention) { ?>
@@ -51,16 +51,10 @@
             <tbody>
               <?php foreach ($products as $product) { ?>
               <tr>
-                <!--          -------------------- alpaygunes ---------
-                              aşağıdaki satıra sadece eklendi ---->
-                <td class="text-center tasarim-onizleme"
-                    orjinal_adres="<?php echo $product['href']; ?>"
-                    onizleme_link="<?php echo $product['onizleme_href'];?>"><?php if ($product['thumb']) { ?>
+                <td class="text-center image"><?php if ($product['thumb']) { ?>
                   <a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-thumbnail" /></a>
                   <?php } ?></td>
-                <td class="text-left name">
-                    <!-- <a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a> -->
-                    <?php echo $product['name']; ?>
+                <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
                   <?php } ?>
@@ -91,25 +85,37 @@
               <?php foreach ($vouchers as $vouchers) { ?>
               <tr>
                 <td></td>
-                <td class="text-left"><?php echo $vouchers['description']; ?></td>
+                <td class="text-left name"><?php echo $vouchers['description']; ?></td>
                 <td class="text-left"></td>
-                <td class="text-left"><div class="input-group btn-block" style="max-width: 200px;">
+                <td class="text-left quantity"><div class="input-group btn-block" style="max-width: 200px;">
                     <input type="text" name="" value="1" size="1" disabled="disabled" class="form-control" />
-                    <span class="input-group-btn"><button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="voucher.remove('<?php echo $vouchers[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>]; ?>');"><i class="fa fa-times-circle"></i></button></span></div></td>
-                <td class="text-right"><?php echo $vouchers['amount']; ?></td>
-                <td class="text-right"><?php echo $vouchers['amount']; ?></td>
+                    <span class="input-group-btn"><button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="voucher.remove('<?php echo $vouchers['key']; ?>');"><i class="fa fa-times-circle"></i></button></span></div></td>
+                <td class="text-right price"><?php echo $vouchers['amount']; ?></td>
+                <td class="text-right total"><?php echo $vouchers['amount']; ?></td>
               </tr>
               <?php } ?>
             </tbody>
           </table>
         </div>
       </form>
-      <?php if ($coupon || $voucher || $reward || $shipping) { ?>
       <div class="action-area">
+        <?php if (version_compare(VERSION, '2.2', '<')): ?>
+        <?php if ($coupon || $voucher || $reward || $shipping) { ?>
         <h3><?php echo $text_next; ?></h3>
         <p><?php echo $text_next_choice; ?></p>
         <div class="panel-group" id="accordion"><?php echo $coupon; ?><?php echo $voucher; ?><?php echo $reward; ?><?php echo $shipping; ?></div>
         <?php } ?>
+        <?php else: ?>
+        <?php if ($modules) { ?>
+        <h3><?php echo $text_next; ?></h3>
+        <p><?php echo $text_next_choice; ?></p>
+        <div class="panel-group" id="accordion">
+          <?php foreach ($modules as $module) { ?>
+          <?php echo $module; ?>
+          <?php } ?>
+        </div>
+        <?php } ?>
+        <?php endif; ?>
         <div class="row">
           <div class="col-sm-4 col-sm-offset-8 cart-total">
             <table class="table table-bordered" id="total">
@@ -123,172 +129,11 @@
           </div>
         </div>
         <div class="buttons">
-          <div class="pull-left"><a href="<?php echo $continue; ?>" class="btn btn-default button"><?php echo $button_shopping; ?></a></div>
-          <div class="pull-right"><a href="<?php echo $checkout; ?>" class="btn btn-primary button"><?php echo $button_checkout; ?></a></div>
+          <div class="pull-left"><a href="<?php echo $continue; ?>" class="btn-default button"><?php echo $button_shopping; ?></a></div>
+          <div class="pull-right"><a href="<?php echo $checkout; ?>" class="btn-primary button"><?php echo $button_checkout; ?></a></div>
         </div>
       </div>
       <?php echo $content_bottom; ?></div>
     </div>
 </div>
-
-
-<!-------------------------------------------alpaygunes ---------------------------------->
-<!--------------------------- müşteri tasarımıyla ilgili tüm js kodları bu sayfada --------------->
-<style>
-  #tasarim-onizleme a{
-    cursor: pointer!important;
-  }
-</style>
-
-<script language="JavaScript">
-  var onizleme_link;
-  $(document).ready(function () {
-    //hersatırda gözüken küçük thumnail resimleri derler
-    kucukResimleriDerle();
-
-    $('.tasarim-onizleme a').removeAttr('href');
-    $('.tasarim-onizleme').click(function () {
-      onizleme_link = $(this).attr('onizleme_link');
-      $('#onizleme-modal').modal('show');
-      $('#loader').show();
-      $('#onilzeme-body').empty();
-      var obj = $(this);
-      $.ajax({
-        type: "POST",
-        url: onizleme_link,
-        success: function(msg) {
-           
-          if(msg!=null){
-            var iceriklerArr = JSON.parse(msg);
-            if(iceriklerArr.length){
-              resmiDerle(iceriklerArr);
-            }else{
-              $('#onizleme-modal').modal('toggle');
-              window.location.href = obj.attr("orjinal_adres");
-            }
-          }else{
-            $('#onizleme-modal').modal('toggle');
-            window.location.href = obj.attr("orjinal_adres");
-          }
-
-        },
-        error: function(msg) {
-          $('#onizleme-modal').modal('toggle');
-          window.location.href = obj.attr("orjinal_adres");
-        }
-      });
-    })
-  })
-
-  function resmiDerle(iceriklerArr){
-    $('#onilzeme-body').empty();
-    $('#onilzeme-body').append(canvasRender(iceriklerArr,$('#onilzeme-body').width(),$('#onilzeme-body').height(),sepet_icin=1));
-    $('#loader').hide();
-    $('#onilzeme-body').find('canvas').css('width','95%')
-  }
-
-  function kucukResimleriDerle(){
-    $('.tasarim-onizleme').each(function (index) {
-      var onizleme_link = $(this).attr('onizleme_link');
-      var kucukresim_a = $(this).find('a');
-      kucukresim_a.append('<i class=\"fa fa-spinner fa-pulse fa-5x fa-fw\"></i>')
-      $.ajax({
-        type: "POST",
-        url: onizleme_link,
-        success: function(msg) {
-          try{
-            var iceriklerArr = JSON.parse(msg);
-            if(iceriklerArr.length){
-              kucukResimeYerlestir(iceriklerArr,kucukresim_a);
-            }else{
-              kucukresim_a.find('i').remove();
-            }
-          }catch(err){
-            kucukresim_a.find('i').remove();
-          }
-
-        },
-        error: function(msg) {
-          kucukresim_a.find('.fa-spinner').remove();
-        }
-      });
-    })
-  }
-
-  function kucukResimeYerlestir(iceriklerArr,kucukresim_a){
-    var canvas      = canvasRender(iceriklerArr,0,0,sepet_icin=1)
-    kucukresim_a.empty();
-    kucukresim_a.append(canvas)
-    kucukresim_a.find('canvas').css('width','50px')
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-<div class="modal fade" tabindex="-1" role="dialog" id="onizleme-modal" aria-labelledby="gridSystemModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="width: 90%; max-width: 450px;min-height: 300px">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">TASARIMINIZ BU ŞEKİLDE GÖZÜKECEK</h4>
-      </div>
-
-      <div id="loader" style="display: none;
-                              width: 200px;
-                              height: 150px;
-                              top:30%;
-                              left: 25%;
-                              z-index: 99;
-                              position: absolute">
-        <div style="    margin-top: 0px;
-                              margin-left: 22px;
-                              width: 150px;
-                              height: 150px;
-                              text-align: center;
-                              background-color: #fff;
-                              border-radius: 100px;
-                              position: absolute;
-                              padding-top: 60px;"
-                >İşlem devam <br> ediyor</div>
-        <i class="fa fa-spinner fa-pulse fa-5x fa-fw"
-           style="
-                     font-size: 150px!important;
-                     position: absolute">
-        </i>
-      </div>
-
-
-      <div class="modal-body" id="onilzeme-body">
-        <br><br><br><br><br><br><br><br>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Kapat</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<?php echo $footer; ?>
-
-<style>
-
-
-  #onilzeme-body{
-    display: block;
-    text-align:padding:0!important;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-</style>
+<?php echo $footer; ?> 

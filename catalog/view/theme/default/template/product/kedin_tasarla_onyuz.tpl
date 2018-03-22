@@ -290,6 +290,7 @@
 <div id="dialog" title="Metin girişi" class="tasarim-dialog" style="display: none;padding: 0px!important;">
     <p id="dialog-metin"></p>
     <input id="dialog-girdi" type="text" class="form-control" value=" ">
+    <textarea id="dialog-girdi-cs"  class="form-control" rows="10"></textarea>
     <br>
 
     <div id="dialog-tamam" class="btn btn-primary pull-right">Tamam</div>
