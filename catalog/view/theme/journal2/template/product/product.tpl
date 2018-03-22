@@ -944,7 +944,7 @@
           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
       });
-    }// enf if ------ --------------------------  alpaygunes
+    }// enf if --------------------------------  alpaygunes
   });
   //--></script>
 <script type="text/javascript"><!--
